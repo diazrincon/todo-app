@@ -1,68 +1,80 @@
 <%- include('partials/_header') %>
 
-    <div class="container">
-        <div class="row">
-            <!--FORM-->
-            <div class="col-md-5 offset-md-3">
-                <div class="card">
-                    <div class="card-body">
-                        <form>
-                            <div class="form-group">
-                                <input class="form-control" type="text" name="user_name"  id="user_name"  placeholder="Name" value="">
-                            </div>
-                            <button class="btn btn-primary" type="submit" onclick="updateUser()">Update</button>
-                            <a href="/users-ui/" class="btn btn-info" >Cancel</a>
-                        </form>
-                    </div>
-                </div>
+<div class="container">
+  <div class="row">
+    <!--FORM-->
+    <div class="col-md-5 offset-md-3">
+      <div class="card">
+        <div class="card-body">
+          <form>
+            <div class="form-group">
+              <input
+                class="form-control"
+                type="text"
+                name="user_name"
+                id="user_name"
+                placeholder="Name"
+                value=""
+              />
             </div>
+            <button
+              class="btn btn-primary"
+              type="submit"
+              onclick="updateUser()"
+            >
+              Update
+            </button>
+            <a href="/users-ui/" class="btn btn-info">Cancel</a>
+          </form>
         </div>
+      </div>
     </div>
- 
-    <script type="text/javascript">
-        
-        //list users
-        function getUser(){        
-            // get user id by removing /tasks/user/ from String
-            let user_id = window.location.pathname.substr(15);
+  </div>
+</div>
 
-            const url = '/v1/users/'+user_id;
-            fetch(url)
-            .then((resp) => resp.json())
-            .then(function(data) {
-                //get User name
-                let user_name = data.name;
-                //put it into input value
-                document.getElementById("user_name").value = user_name;
-            })
-            .catch(function(error) {
-                console.log(error);
-            });
-        }
+<script type="text/javascript">
+  //list users
+  function getUser() {
+    // get user id by removing /tasks/user/ from String
+    let user_id = window.location.pathname.substr(15);
 
-        // save an user
-        function updateUser(){    
-            let user_id = window.location.pathname.substr(15);      
-            let user_name = document.getElementById('user_name').value 
-            
-            var myHeaders = new Headers(); 
-            myHeaders.append("Content-Type", "application/json");
-            var raw = JSON.stringify({"name":user_name});
+    const url = "/v1/users/" + user_id;
+    fetch(url)
+      .then((resp) => resp.json())
+      .then(function (data) {
+        //get User name
+        let user_name = data.name;
+        //put it into input value
+        document.getElementById("user_name").value = user_name;
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+  }
 
-            var requestOptions = {
-            method: 'PUT',
-            headers: myHeaders,
-            body: raw,
-            redirect: 'follow'
-            };
+  // save an user
+  function updateUser() {
+    let user_id = window.location.pathname.substr(15);
+    let user_name = document.getElementById("user_name").value;
 
-            fetch("/v1/users/"+user_id, requestOptions)
-            .then(response => response.text())
-            .then(result => location.replace("/users-ui/"))
-            .catch(error => console.log('error', error));
-        }
+    var myHeaders = new Headers();
+    myHeaders.append("Content-Type", "application/json");
+    var raw = JSON.stringify({ name: user_name });
 
-        getUser();
-    </script>
+    var requestOptions = {
+      method: "PUT",
+      headers: myHeaders,
+      body: raw,
+      redirect: "follow",
+    };
 
-<%- include('partials/_footer') %>   
+    fetch("/v1/users/" + user_id, requestOptions)
+      .then((response) => response.text())
+      .then((result) => location.replace("/users-ui/"))
+      .catch((error) => console.log("error", error));
+  }
+
+  getUser();
+</script>
+
+<%- include('partials/_footer') %>
